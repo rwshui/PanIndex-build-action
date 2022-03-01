@@ -1,0 +1,12 @@
+# action.yml
+name: 'PanIndex-build-action'
+author: 'libsgh <woiyyng@gmail.com>'
+description: 'Build PanIndex binaries'
+runs:
+  using: "composite"
+  steps:
+    - run: build.sh
+      shell: bash
+branding:
+  icon: 'package'
+  color: 'blue'
