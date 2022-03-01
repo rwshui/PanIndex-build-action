@@ -10,7 +10,6 @@ runs:
         sudo apt install upx
         docker pull techknowlogick/xgo:latest
         go env -w GO111MODULE=on
-        go env
         go install src.techknowlogick.com/xgo@latest
         go install github.com/gobuffalo/packr/v2/packr2@v2.8.3
       shell: bash
