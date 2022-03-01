@@ -20,7 +20,7 @@ BUILD(){
 }
 
 RELEASE(){
-  for i in $(find . -type f -name "PanIndex"); do
+  for i in $(find . -type f -name "PanIndex*"); do
     if [ [[ "$i" =~ "windows" ]] ]; then
       zip compress/$(echo $i | sed 's/\.[^.]*$//').zip "$i"
     else
@@ -28,7 +28,14 @@ RELEASE(){
     fi
     sha256sum "$i" >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
   done
-  cd compress
+  cd ../
+  mkdir ui
+  cp -R -f static/ ui/static/
+  cp -R -f templates/ ui/templates/
+  cd ui
+  zip -vr dist/compress/ui-${RELEASE_TAG}.zip *
+  sha256sum ui-${RELEASE_TAG}.zip >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
+  cd dist/compress
   ls -n
   cd ../../..
 }
