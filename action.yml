@@ -5,8 +5,17 @@ description: 'Build PanIndex binaries'
 runs:
   using: "composite"
   steps:
-    - run: |
-        "${GITHUB_WORKSPACE}/.github/build.sh"
+    - name: Setup Env
+      run: |
+        sudo apt install upx
+        docker pull techknowlogick/xgo:latest
+        go env -w GO111MODULE=on
+        go install src.techknowlogick.com/xgo@latest
+        go install github.com/gobuffalo/packr/v2@latest
+      shell: bash
+    - name: Build
+      run: |
+        bash <(curl -L https://raw.githubusercontent.com/libsgh/PanIndex-build-action/main/build.sh)
       shell: bash
 branding:
   icon: 'package'
