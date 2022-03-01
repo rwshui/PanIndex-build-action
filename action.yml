@@ -5,7 +5,8 @@ description: 'Build PanIndex binaries'
 runs:
   using: "composite"
   steps:
-    - run: build.sh
+    - run: |
+      "${GITHUB_WORKSPACE}/.github/build.sh"
       shell: bash
 branding:
   icon: 'package'
