@@ -10,7 +10,7 @@ BUILD(){
   -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
   "
   packr2
-  docker ps
+  docker images
   xgo -out PanIndex -ldflags="$ldflags"
   mkdir -p dist
   mv PanIndex-* dist
