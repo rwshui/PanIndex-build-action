@@ -11,7 +11,7 @@ runs:
         docker pull techknowlogick/xgo:latest
         go env -w GO111MODULE=on
         go install src.techknowlogick.com/xgo@latest
-        go install github.com/gobuffalo/packr/v2@latest
+        go install github.com/gobuffalo/packr/v2@v2.8.3
       shell: bash
     - name: Build
       run: |
