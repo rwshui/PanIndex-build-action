@@ -10,7 +10,7 @@ ldflags="\
 BUILD(){
   cd ${GITHUB_WORKSPACE}
   packr2
-  xgo -out PanIndex -ldflags="$ldflags -H windowsgui" .
+  xgo -out PanIndex -ldflags="$ldflags" .
   mkdir -p ${GITHUB_WORKSPACE}/dist/compress
   mv PanIndex-* dist
   cd dist
