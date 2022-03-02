@@ -20,6 +20,7 @@ BUILD(){
 }
 
 RELEASE(){
+  mkdir compress
   for i in $(find . -type f -name "PanIndex*"); do
     if [ [[ "$i" =~ "windows" ]] ]; then
       zip compress/$(echo $i | sed 's/\.[^.]*$//').zip "$i"
