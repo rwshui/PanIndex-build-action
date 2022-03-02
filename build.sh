@@ -11,7 +11,7 @@ BUILD(){
   "
   packr2
   docker images
-  xgo -out PanIndex -ldflags="$ldflags" .
+  xgo --targets=linux/arm -out PanIndex -ldflags="$ldflags" .
   mkdir -p dist
   mv PanIndex-* dist
   cd dist
