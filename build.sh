@@ -36,7 +36,7 @@ RELEASE(){
   cd ui
   ls -n
   zip -vr ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip *
-  sha256sum ui-${RELEASE_TAG}.zip >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
+  sha256sum ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
   cd dist/compress
   ls -n
   cd ../../..
