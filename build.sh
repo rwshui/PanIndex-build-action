@@ -11,7 +11,7 @@ BUILD(){
   "
   packr2
   xgo --targets=linux/arm64 -out PanIndex -ldflags="$ldflags" .
-  mkdir -p dist/compress
+  mkdir -p ${GITHUB_WORKSPACE}/dist/compress
   mv PanIndex-* dist
   cd dist
   upx -9 ./PanIndex-linux*
@@ -37,9 +37,10 @@ RELEASE(){
   ls -n
   zip -vr ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip *
   sha256sum ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
-  cd dist/compress
+  cd ${GITHUB_WORKSPACE}/dist/compress
   ls -n
-  cd ../../..
+  cd ${GITHUB_WORKSPACE}
+  cd ..
 }
 
 BUILD
