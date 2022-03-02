@@ -34,11 +34,9 @@ RELEASE(){
   cp -R -f static/ ui/static/
   cp -R -f templates/ ui/templates/
   cd ui
-  ls -n
   zip -vr ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip *
   sha256sum ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
-  cd ${GITHUB_WORKSPACE}/dist/compress
-  ls -n
+  cd ${GITHUB_WORKSPACE}/dist
 }
 
 BUILD
