@@ -1,4 +1,5 @@
 #!/bin/bash -eux
+RELEASE_TAG=$(basename ${GITHUB_REF})
 ldflags="\
   -w -s \
   -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}' \
@@ -8,9 +9,8 @@ ldflags="\
   "
 BUILD(){
   cd ${GITHUB_WORKSPACE}
-  RELEASE_TAG=$(basename ${GITHUB_REF})
   packr2
-  xgo --targets=linux/amd64,windows/* -out PanIndex -ldflags="$ldflags" .
+  xgo -out PanIndex -ldflags="$ldflags" .
   mkdir -p ${GITHUB_WORKSPACE}/dist/compress
   mv PanIndex-* dist
   cd dist
@@ -53,9 +53,7 @@ RELEASE(){
   cp -r LICENSE README.md ${GITHUB_WORKSPACE}/dist
   cd ${GITHUB_WORKSPACE}/dist
   for f in $(find * -type f -name "PanIndex*"); do
-    echo $f
     if [[ "$f" =~ "windows" ]]; then
-      echo "compress/$(echo $f | sed 's/\.[^.]*$//').zip"
       zip compress/$(echo $f | sed 's/\.[^.]*$//').zip "$f" LICENSE README.md
     else
        tar -czvf compress/"$f".tar.gz "$f" LICENSE README.md
