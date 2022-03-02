@@ -25,12 +25,14 @@ COMPRESS_UI(){
   cp -R -f templates/ ui/templates/
   cd ui
   zip -vr ${GITHUB_WORKSPACE}/dist/compress/ui-${RELEASE_TAG}.zip *
+  cd ${GITHUB_WORKSPACE}/dist/compress
   sha256sum ui-${RELEASE_TAG}.zip >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
 }
 
 RELEASE(){
   cp -r LICENSE README.md ${GITHUB_WORKSPACE}/dist
-  for f in $(find ${GITHUB_WORKSPACE}/dist -type f -name "PanIndex*"); do
+  cd ${GITHUB_WORKSPACE}/dist
+  for f in $(find * -type f -name "PanIndex*"); do
     echo $f
     if [[ "$f" =~ "windows" ]]; then
       echo "compress/$(echo $f | sed 's/\.[^.]*$//').zip"
