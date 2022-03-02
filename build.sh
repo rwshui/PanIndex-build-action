@@ -10,19 +10,20 @@ BUILD(){
   -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
   "
   packr2
-  docker images
   xgo --targets=linux/arm -out PanIndex -ldflags="$ldflags" .
-  mkdir -p dist
+  mkdir -p dist/compress
   mv PanIndex-* dist
   cd dist
   upx -9 ./PanIndex-linux*
-  upx -9 ./PanIndex-windows*
+  #upx -9 ./PanIndex-windows*
 }
 
 RELEASE(){
-  mkdir compress
+  ls -n
   for i in $(find . -type f -name "PanIndex*"); do
     if [ [[ "$i" =~ "windows" ]] ]; then
+      echo $(echo $i | sed 's/\.[^.]*$//')
+      echo $i | sed 's/\.[^.]*$//'
       zip compress/$(echo $i | sed 's/\.[^.]*$//').zip "$i"
     else
        tar -czvf compress/"$i".tar.gz "$i"
