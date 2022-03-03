@@ -9,7 +9,6 @@ ldflags="\
   "
 BUILD(){
   cd ${GITHUB_WORKSPACE}
-  packr2
   xgo --targets=linux/* -out PanIndex -ldflags="$ldflags" .
   xgo --targets=darwin/* -out PanIndex -ldflags="$ldflags" .
   xgo --targets=windows/* -out PanIndex -ldflags="$ldflags -H windowsgui" .
