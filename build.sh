@@ -19,6 +19,10 @@ BUILD(){
   upx -9 ./PanIndex-windows*
 }
 
+BUILD_DOCKER() {
+  go build -o ./bin/PanIndex -ldflags="-s -w $ldflags" .
+}
+
 BUILD_MUSL(){
   cd ${GITHUB_WORKSPACE}
   BASE="https://musl.cc/"
@@ -63,8 +67,13 @@ RELEASE(){
   done
 }
 
-BUILD
-BUILD_MUSL
-RELEASE
-COMPRESS_UI
+if [ "$1" = "docker" ]; then
+  BUILD_DOCKER
+else
+  BUILD
+  BUILD_MUSL
+  RELEASE
+  COMPRESS_UI
+fi
+
 
