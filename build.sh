@@ -9,9 +9,9 @@ ldflags="\
   "
 BUILD(){
   cd ${GITHUB_WORKSPACE}
-  xgo --targets=linux/* -out PanIndex -ldflags="-s -w $ldflags" .
-  xgo --targets=darwin/* -out PanIndex -ldflags="-s -w $ldflags" .
-  xgo --targets=windows/* -out PanIndex -ldflags="-s -w $ldflags -H windowsgui" .
+  xgo --targets=linux/* -out PanIndex -ldflags="$ldflags" .
+  xgo --targets=darwin/* -out PanIndex -ldflags="$ldflags" .
+  xgo --targets=windows/* -out PanIndex -ldflags="$ldflags -H windowsgui" .
   mkdir -p ${GITHUB_WORKSPACE}/dist/compress
   mv PanIndex-* dist
   cd dist
@@ -20,7 +20,7 @@ BUILD(){
 }
 
 BUILD_DOCKER() {
-  go build -o ./bin/PanIndex -ldflags="-s -w $ldflags" .
+  go build -o ./bin/PanIndex -ldflags="$ldflags" .
 }
 
 BUILD_MUSL(){
