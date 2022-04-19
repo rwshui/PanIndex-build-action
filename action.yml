@@ -10,7 +10,7 @@ runs:
         sudo apt install upx
         docker pull crazymax/xgo:latest
         go env -w GO111MODULE=on
-        go install github.com/crazy-max/xgo
+        go install github.com/crazy-max/xgo@latest
       shell: bash
     - name: Build
       run: |
