@@ -8,7 +8,7 @@ runs:
     - name: Setup Env
       run: |
         sudo apt install upx
-        docker pull techknowlogick/xgo:latest
+        docker pull techknowlogick/xgo:go-1.17.9
         go env -w GO111MODULE=on
         go install src.techknowlogick.com/xgo@latest
       shell: bash
