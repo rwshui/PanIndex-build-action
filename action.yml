@@ -8,9 +8,9 @@ runs:
     - name: Setup Env
       run: |
         sudo apt install upx
-        docker pull techknowlogick/xgo:go-1.17.9
+        docker pull crazymax/xgo:latest
         go env -w GO111MODULE=on
-        go install src.techknowlogick.com/xgo@latest
+        go install github.com/crazy-max/xgo
       shell: bash
     - name: Build
       run: |
