@@ -9,9 +9,9 @@ ldflags="\
   "
 BUILD(){
   cd ${GITHUB_WORKSPACE}
-  xgo --targets=linux/* -go go-1.17.9 -out PanIndex -ldflags="$ldflags" .
-  xgo --targets=darwin/* -go go-1.17.9 -out PanIndex -ldflags="$ldflags" .
-  xgo --targets=windows/* -go go-1.17.9 -out PanIndex -ldflags="$ldflags -H windowsgui" .
+  xgo --targets=linux/* -out PanIndex -ldflags="$ldflags" .
+  xgo --targets=darwin/* -out PanIndex -ldflags="$ldflags" .
+  xgo --targets=windows/* -out PanIndex -ldflags="$ldflags -H windowsgui" .
   mkdir -p ${GITHUB_WORKSPACE}/dist/compress
   mv PanIndex-* dist
   cd dist
