@@ -19,6 +19,15 @@ BUILD(){
   upx -9 ./PanIndex-windows*
 }
 
+NIGHTLY_BUILD() {
+  cd ${GITHUB_WORKSPACE}
+  xgo --targets="$1" -out PanIndex -ldflags="$ldflags" .
+  mv PanIndex-* dist
+  cd dist
+  upx -9 ./PanIndex-*
+  cp -r LICENSE README.md ${GITHUB_WORKSPACE}/dist
+}
+
 BUILD_DOCKER() {
   go build -o ./bin/PanIndex -ldflags="$ldflags" .
 }
@@ -67,8 +76,8 @@ RELEASE(){
   done
 }
 
-if [ "$1" = "docker" ]; then
-  BUILD_DOCKER
+if [ ! -n "$1" ]; then
+  NIGHTLY_BUILD $1
 else
   BUILD
   BUILD_MUSL
