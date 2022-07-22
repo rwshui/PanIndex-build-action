@@ -7,6 +7,23 @@ ldflags="\
   -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
   -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
   "
+GET_NEW_VERSION ()
+{
+  LatestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+  LatestTag=${LatestTag:1}
+  declare -a part=( ${LatestTag//\./ } )
+  declare    new
+  declare -i carry=1
+
+  for (( CNTR=${#part[@]}-1; CNTR>=0; CNTR-=1 )); do
+    len=${#part[CNTR]}
+    new=$((part[CNTR]+carry))
+    [ ${#new} -gt $len ] && carry=1 || carry=0
+    [ $CNTR -gt 0 ] && part[CNTR]=${new: -len} || part[CNTR]=${new}
+  done
+  new="${part[*]}"
+  RELEASE_TAG="v${new// /.}"
+}
 BUILD(){
   cd ${GITHUB_WORKSPACE}
   xgo --targets=linux/* -out PanIndex -ldflags="$ldflags" .
@@ -20,6 +37,14 @@ BUILD(){
 }
 
 NIGHTLY_BUILD() {
+  GET_NEW_VERSION
+  ldflags="\
+    -w -s \
+    -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}' \
+    -X 'github.com/libsgh/PanIndex/module.BUILD_TIME=$(date "+%F %T")' \
+    -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
+    -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
+    "
   cd ${GITHUB_WORKSPACE}
   xgo --targets="$1" -out PanIndex -ldflags="$ldflags" .
   mv PanIndex-* dist
@@ -76,15 +101,13 @@ RELEASE(){
   done
 }
 
-echo "eee  $1"
 if [ "$1" == '' ]; then
   BUILD
   BUILD_MUSL
   RELEASE
   COMPRESS_UI
 else
-  #NIGHTLY_BUILD $1
-  echo "$1"
+  NIGHTLY_BUILD $1
 fi
 
 
