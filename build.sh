@@ -76,14 +76,15 @@ RELEASE(){
   done
 }
 
-if [ ! -n "$1" ]; then
-  #NIGHTLY_BUILD $1
-  echo "$1"
-else
+echo "eee  $1"
+if [ "$1" == '' ]; then
   BUILD
   BUILD_MUSL
   RELEASE
   COMPRESS_UI
+else
+  #NIGHTLY_BUILD $1
+  echo "$1"
 fi
 
 
