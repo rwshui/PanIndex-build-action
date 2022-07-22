@@ -7,6 +7,7 @@ ldflags="\
   -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
   -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
   "
+BUILD_TARGET="linux/amd64"
 GET_NEW_VERSION ()
 {
   LatestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -46,7 +47,8 @@ NIGHTLY_BUILD() {
     -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
     "
   cd ${GITHUB_WORKSPACE}
-  xgo --targets="$1" -out PanIndex -ldflags="$ldflags" .
+  xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$ldflags" .
+  mkdir -p ${GITHUB_WORKSPACE}/dist
   mv PanIndex-* dist
   cd dist
   upx -9 ./PanIndex-*
@@ -107,7 +109,8 @@ if [ "$1" == '' ]; then
   RELEASE
   COMPRESS_UI
 else
-  NIGHTLY_BUILD $1
+  BUILD_TARGET="$1"
+  NIGHTLY_BUILD
 fi
 
 
