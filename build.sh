@@ -77,7 +77,8 @@ RELEASE(){
 }
 
 if [ ! -n "$1" ]; then
-  NIGHTLY_BUILD $1
+  #NIGHTLY_BUILD $1
+  echo "$1"
 else
   BUILD
   BUILD_MUSL
