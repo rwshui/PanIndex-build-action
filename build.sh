@@ -46,6 +46,8 @@ NIGHTLY_BUILD() {
     -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
     -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
     "
+  echo "$ldflags"
+  echo "$BUILD_TARGET"
   cd ${GITHUB_WORKSPACE}
   xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$ldflags" .
   mkdir -p ${GITHUB_WORKSPACE}/dist
