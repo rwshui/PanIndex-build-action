@@ -42,7 +42,7 @@ NIGHTLY_BUILD() {
   d=$(date "+%m%d%H%M")
   flags="\
     -w -s \
-    -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}-${d}' \
+    -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}.${d}' \
     -X 'github.com/libsgh/PanIndex/module.BUILD_TIME=$(date "+%F %T")' \
     -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
     -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
