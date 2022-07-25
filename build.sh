@@ -39,21 +39,21 @@ BUILD(){
 
 NIGHTLY_BUILD() {
   GET_NEW_VERSION
-  ldflags="\
+  d=$(date "+%m%d%H%M")
+  flags="\
     -w -s \
-    -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}' \
+    -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}-${d}' \
     -X 'github.com/libsgh/PanIndex/module.BUILD_TIME=$(date "+%F %T")' \
     -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
     -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
     "
-  echo "$ldflags"
-  echo "$BUILD_TARGET"
   cd ${GITHUB_WORKSPACE}
-  xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$ldflags" .
+  xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$flags" .
   mkdir -p ${GITHUB_WORKSPACE}/dist
   mv PanIndex-* dist
   cd dist
   upx -9 ./PanIndex-*
+  cd ${GITHUB_WORKSPACE}
   cp -r LICENSE README.md ${GITHUB_WORKSPACE}/dist
 }
 
@@ -114,5 +114,3 @@ else
   BUILD_TARGET="$1"
   NIGHTLY_BUILD
 fi
-
-
