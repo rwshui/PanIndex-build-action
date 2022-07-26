@@ -57,6 +57,13 @@ NIGHTLY_BUILD() {
   cp -r LICENSE README.md ${GITHUB_WORKSPACE}/dist
 }
 
+NIGHTLY_UI_BUILD() {
+  cd ${GITHUB_WORKSPACE}
+  mkdir -p ${GITHUB_WORKSPACE}/dist/ui
+  cp -R -f static/ ${GITHUB_WORKSPACE}/dist/ui/static/
+  cp -R -f templates/ ${GITHUB_WORKSPACE}/dist/ui/templates/
+}
+
 BUILD_DOCKER() {
   go build -o ./bin/PanIndex -ldflags="$ldflags" .
 }
@@ -110,6 +117,8 @@ if [ "$1" == '' ]; then
   BUILD_MUSL
   RELEASE
   COMPRESS_UI
+elif [ "$1" == 'static/ui' ]; then
+  NIGHTLY_UI_BUILD
 else
   BUILD_TARGET="$1"
   NIGHTLY_BUILD
