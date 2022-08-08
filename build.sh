@@ -48,7 +48,13 @@ NIGHTLY_BUILD() {
     -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
     "
   cd ${GITHUB_WORKSPACE}
-  xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$flags" .
+  target_flag=$(echo $BUILD_TARGET | grep "windows")
+  if [[ "$target_flag" != "" ]]
+  then
+      xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$flags -H windowsgui" .
+  else
+      xgo --targets="$BUILD_TARGET" -out PanIndex -ldflags="$flags" .
+  fi
   mkdir -p ${GITHUB_WORKSPACE}/dist
   mv PanIndex-* dist
   cd dist
