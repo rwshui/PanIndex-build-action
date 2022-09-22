@@ -74,9 +74,22 @@ BUILD_DOCKER() {
   go build -o ./bin/PanIndex -ldflags="$ldflags" .
 }
 
+NIGHTLY_BUILD_DOCKER() {
+  GET_NEW_VERSION
+  d=$(date "+%m%d%H%M")
+  flags="\
+      -w -s \
+      -X 'github.com/libsgh/PanIndex/module.VERSION=${RELEASE_TAG}.${d}' \
+      -X 'github.com/libsgh/PanIndex/module.BUILD_TIME=$(date "+%F %T")' \
+      -X 'github.com/libsgh/PanIndex/module.GO_VERSION=$(go version)' \
+      -X 'github.com/libsgh/PanIndex/module.GIT_COMMIT_SHA=$(git show -s --format=%H)' \
+      "
+  go build -o ./bin/PanIndex -ldflags="$flags" .
+}
+
 BUILD_MUSL(){
   cd ${GITHUB_WORKSPACE}
-  BASE="https://musl.cc/"
+  BASE="https://musl.noki.workers.dev/"
   FILES=(x86_64-linux-musl-cross aarch64-linux-musl-cross arm-linux-musleabihf-cross mips-linux-musl-cross mips64-linux-musl-cross mips64el-linux-musl-cross mipsel-linux-musl-cross powerpc64le-linux-musl-cross s390x-linux-musl-cross)
   for i in "${FILES[@]}"; do
     url="${BASE}${i}.tgz"
@@ -117,12 +130,15 @@ RELEASE(){
     sha256sum "$f" >> ${GITHUB_WORKSPACE}/dist/compress/sha256.list
   done
 }
-
 if [ "$1" == '' ]; then
   BUILD
   BUILD_MUSL
   RELEASE
   COMPRESS_UI
+elif [ "$1" = "docker" ]; then
+    BUILD_DOCKER
+elif [ "$1" = "nightly_docker" ]; then
+    NIGHTLY_BUILD_DOCKER
 elif [ "$1" == 'static/ui' ]; then
   NIGHTLY_UI_BUILD
 else
